@@ -12,8 +12,14 @@ class ConnectionParams {
         connection = connectionInstance
     }
 
-    fun ofTypeGet(): Connection? {
+    fun ofTypeGet(): Connection {
         connection!!.setRequestType("GET")
-        return connection
+        return connection!!
     }
+
+    fun ofTypePost(): Connection{
+        connection!!.setRequestType("POST")
+        return connection!!
+    }
+
 }

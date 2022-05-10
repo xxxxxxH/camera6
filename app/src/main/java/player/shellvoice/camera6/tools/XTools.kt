@@ -1,5 +1,6 @@
 package player.shellvoice.camera6.tools
 
+import android.Manifest
 import android.app.ActivityManager
 import android.content.Context
 import android.util.Log
@@ -9,24 +10,21 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.hjq.permissions.XXPermissions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import player.shellvoice.camera6.R
 import player.shellvoice.camera6.basic.XApp
-import player.shellvoice.camera6.http.OnNetworkRequest
 import player.shellvoice.camera6.http.HttpTools
+import player.shellvoice.camera6.http.OnNetworkRequest
 
-fun AppCompatActivity.getConfig(onSuccess:()->Unit,onFailure:()->Unit){
+fun AppCompatActivity.getConfig(onSuccess: () -> Unit, onFailure: () -> Unit) {
     HttpTools.with(this)
         .fromUrl("https://seasheel.xyz/config")
-        .ofTypeGet()!!
-        .connect(object :OnNetworkRequest{
-            override fun onStart() {
-
-            }
-
+        .ofTypeGet()
+        .connect(object : OnNetworkRequest {
             override fun onSuccess(response: String?) {
                 "response $response".xLogs()
                 response?.let {
@@ -59,14 +57,39 @@ fun AppCompatActivity.getConfig(onSuccess:()->Unit,onFailure:()->Unit){
                 responseMessage: String,
                 errorStream: String
             ) {
-               "onFailure".xLogs()
+                "onFailure".xLogs()
                 onFailure()
             }
         })
 }
 
+fun AppCompatActivity.upload(content:String, onSuccess: (String) -> Unit,onFailure: () -> Unit) {
+    HttpTools.with(this).fromUrl(testUrl)
+        .ofTypePost()
+        .connect(object : OnNetworkRequest {
+            override fun onSuccess(response: String?) {
+                "response $response".xLogs()
+                response?.let {
+                    onSuccess(it)
+                }
+            }
 
-fun AppCompatActivity.appendBanner(){
+            override fun onFailure(responseCode: Int, responseMessage: String, errorStream: String) {
+                "onFailure".xLogs()
+                onFailure()
+            }
+
+        }, jsonStr = gson.toJson(mutableMapOf("content" to testContent)))
+
+}
+
+fun AppCompatActivity.getPermissions(requestResult:(Boolean) -> Unit){
+    XXPermissions.with(this).permission(permissions).request { _, all ->
+        requestResult(all)
+    }
+}
+
+fun AppCompatActivity.appendBanner() {
     val content = findViewById<ViewGroup>(android.R.id.content)
     val frameLayout = FrameLayout(this)
     val p = ViewGroup.LayoutParams(
@@ -106,6 +129,7 @@ fun dp2px(context: Context, dp: Float): Int {
     val density = context.resources.displayMetrics.density
     return (dp * density + 0.5f).toInt()
 }
+
 fun isInBackground(): Boolean {
     val activityManager =
         XApp.instance!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -119,6 +143,6 @@ fun isInBackground(): Boolean {
     return false
 }
 
-fun Any?.xLogs(){
+fun Any?.xLogs() {
     Log.e("xxxxxxH", "$this")
 }

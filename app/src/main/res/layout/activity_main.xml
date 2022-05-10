@@ -1,14 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.XHome">
 
-    <TextView
+    <FrameLayout
+        android:id="@+id/homeAd"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#C0C0C0" />
+
+    <ImageView
+        android:id="@+id/camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/content"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/h6" />
 
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/homeAd"
+        android:background="@mipmap/h1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <RelativeLayout
+                android:id="@+id/sticker"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/h2" />
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:text="Sticker"
+                    android:textColor="#5C2F01"
+                    android:textSize="9sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/slimming"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/h3" />
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:text="Slimming"
+                    android:textColor="#5C2F01"
+                    android:textSize="9sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/cartoon"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/h4" />
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:text="Cartoon"
+                    android:textColor="#5C2F01"
+                    android:textSize="9sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ageAlter"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/h5" />
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:text="Age Alter"
+                    android:textColor="#5C2F01"
+                    android:textSize="9sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
 </RelativeLayout>
