@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:id="@+id/mainRel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/mainRel"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3">
-
         <ImageView
-            android:id="@+id/stickerBg"
+            android:id="@+id/editorBg"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:transitionName="a"/>
 
         <com.lcw.library.stickerview.StickerLayout
             android:id="@+id/sticker"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

@@ -12,6 +12,8 @@ import com.anythink.splashad.api.IATSplashEyeAd
 import com.applovin.mediation.MaxAd
 import com.applovin.mediation.MaxError
 import com.applovin.mediation.ads.MaxInterstitialAd
+import com.applovin.mediation.nativeAds.MaxNativeAdListener
+import com.applovin.mediation.nativeAds.MaxNativeAdView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -156,6 +158,23 @@ abstract class XPage(layoutId: Int) : AppCompatActivity(layoutId) {
             }
         }
         return false
+    }
+
+    fun displayNativeAd(display:(MaxNativeAdView?)->Unit){
+        val ad = XApp.instance!!.nativeAd(nativeId)
+        ad.loadAd()
+        ad.setNativeAdListener(object :MaxNativeAdListener(){
+            override fun onNativeAdLoaded(p0: MaxNativeAdView?, p1: MaxAd?) {
+                super.onNativeAdLoaded(p0, p1)
+                display(p0)
+            }
+
+            override fun onNativeAdLoadFailed(p0: String?, p1: MaxError?) {
+                super.onNativeAdLoadFailed(p0, p1)
+                p0.xLogs()
+                p1.xLogs()
+            }
+        })
     }
 
     override fun onStop() {

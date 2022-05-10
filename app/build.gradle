@@ -50,7 +50,6 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.2.0'
     implementation 'com.google.code.gson:gson:2.8.8'
     implementation 'com.facebook.android:facebook-android-sdk:12.3.0'
-    implementation 'io.github.youth5201314:banner:2.2.2'
 
     implementation 'com.applovin:applovin-sdk:11.1.3'
     implementation 'com.applovin.mediation:facebook-adapter:6.8.0.12'
@@ -75,4 +74,5 @@ dependencies {
     implementation 'com.allattentionhere:fabulousfilter:0.0.5'
     implementation 'net.idik:slimadapter:2.1.2'
     implementation 'com.lcw.library:StickeView:1.0.1'
+    implementation 'com.github.michaelye.easydialog:easydialog:1.4'
 }
