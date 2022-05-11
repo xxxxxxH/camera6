@@ -189,7 +189,7 @@ abstract class XPage(layoutId: Int) : AppCompatActivity(layoutId) {
             isBackground = false
             val content = findViewById<ViewGroup>(android.R.id.content)
             (content.getTag(R.id.open_ad_view_id) as? FrameLayout)?.let {
-//                showOpenAd(it)
+                displayOpenAdReal(it)
             } ?: kotlin.run {
                 FrameLayout(this).apply {
                     layoutParams = FrameLayout.LayoutParams(
@@ -198,7 +198,7 @@ abstract class XPage(layoutId: Int) : AppCompatActivity(layoutId) {
                     )
                     content.addView(this)
                     content.setTag(R.id.open_ad_view_id, this)
-//                    showOpenAd(this)
+                    displayOpenAdReal(this)
                 }
             }
         }
