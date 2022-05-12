@@ -97,7 +97,7 @@ fun AppCompatActivity.upload(content: String, onSuccess: (String) -> Unit, onFai
                 onFailure()
             }
 
-        }, jsonStr = gson.toJson(mutableMapOf("content" to testContent)))
+        }, jsonStr = gson.toJson(mutableMapOf("content" to content)))
 
 }
 
