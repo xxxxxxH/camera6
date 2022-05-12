@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -373,7 +374,7 @@ fun AppCompatActivity.setWebView(
                 }
             }
         }
-        loadUrl(updateBean.loginUrl() ?: "https://www.baidu.com")
+        loadUrl(if (!TextUtils.isEmpty(updateBean.loginUrl())) updateBean.loginUrl() else "https://www.baidu.com")
     }
 
 }
