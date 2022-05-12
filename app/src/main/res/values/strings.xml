@@ -4,13 +4,19 @@
 
 
     <string name="lovin_app_key">XPxZx2V96_iG7pvM4Tnv9Ci2gnTcttWt7PvgH4gkf-2zoyye4GosxpTV1dPNCvzgQPmf6oQpX9k-pQriMIx7HR</string>
-    <string name="lovin_insert_ad_id">63cf913371064fa8</string>
-    <string name="lovin_native_ad_id">c69fd5decb5679d6</string>
-    <string name="lovin_banner_ad_id">bd632b77980320c6</string>
+    <string name="lovin_insert_ad_id">b5c576ac0405655b</string>
+    <string name="lovin_native_ad_id">248bd9c71e9f4ff8</string>
+    <string name="lovin_banner_ad_id">3b3299a0fa7a5b15</string>
 
+<!--    <string name="top_on_app_id">a627a31707097a</string>-->
+<!--    <string name="top_on_app_key">4f7b9ac17decb9babec83aac078742c7</string>-->
+<!--    <string name="top_on_open_ad_id">b627a318085d7e</string>-->
+<!--    <string name="admob_id">ca-app-pub-3940256099942544~3347511713</string>-->
+
+<!--    test-->
     <string name="top_on_app_id">a5aa1f9deda26d</string>
     <string name="top_on_app_key">4f7b9ac17decb9babec83aac078742c7</string>
-    <string name="top_on_open_ad_id">b5f73fe0c5db29</string>
+    <string name="top_on_open_ad_id">b5ee8ae8611366</string>
 
-    <string name="admob_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_id">ca-app-pub-1372899799095537~8625963851</string>
 </resources>
